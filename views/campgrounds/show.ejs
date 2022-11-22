@@ -1,28 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Details for Campground</title>
-</head>
-
-<body>
-    <h1>Details for <%= campground.title %>
-    </h1>
-    <ul>
-        <li>Location: <%= campground.location %>
-        </li>
-    </ul>
-    <footer>
-        <a href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
-        <a href="/campgrounds">Back to All Campgrounds</a>
-        <form action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
-            <button>Delete Campground</button>
-        </form>
-    </footer>
-
-</body>
-
-</html>
+<% layout('layouts/boilerplate') %> 
+<h1>Details for <%= campground.title %>
+</h1>
+<ul>
+    <li>Location: <%= campground.location %>
+    </li>
+</ul>
+<footer>
+    <a href="/campgrounds/<%= campground._id %>/edit">Edit Campground</a>
+    <a href="/campgrounds">Back to All Campgrounds</a>
+    <form action="/campgrounds/<%=campground._id%>?_method=DELETE" method="POST">
+        <button>Delete Campground</button>
+    </form>
+</footer>
