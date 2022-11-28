@@ -5,7 +5,10 @@ const ejsMate = require('ejs-mate');
 // const joi = require('joi');
 const catchAsync = require('./utils/catchAsync');
 const ExpressError = require('./utils/ExpressError')
+
 const Campground = require('./models/campground');
+const Review = require('./models/review');
+
 const {campgroundSchema} = require('./schemas.js');
 const methodOverride = require('method-override');
 
@@ -82,6 +85,18 @@ app.delete('/campgrounds/:id', catchAsync(async (req, res) => {
     // const campgrounds = await Campground.find({});
     // console.log(campgrounds);
 }));
+
+app.post('/campgrounds/:id/reviews', catchAsync(async (req, res) => {
+    const campground = await Campground.findById(req.params.id);
+    const review = new Review(req.body.review);
+    campground.reviews.push(review);
+    await review.save();
+    await campground.save();
+    res.redirect(`/campgrounds/${campground._id}`);
+}))
+
+
+
 
 // for every request and every path
 app.all('*', (req, res, next) => {
