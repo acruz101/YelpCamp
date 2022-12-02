@@ -26,10 +26,18 @@ router.get('/login', (req, res) => {
 })
 
 // have passport authenticate with local strategy
-router.post('/login', passport.authenticate('local', {failureFlash: true, failureRedirect: '/login'}), async (req, res) => {
+router.post('/login', passport.authenticate('local', { failureFlash: true, failureRedirect: '/login' }), async (req, res) => {
     // if we make it this far with passport, user is authenticated
     req.flash('success', 'Welcome Back!');
     res.redirect('/campgrounds')
+})
+
+router.get('/logout', (req, res) => {
+    req.logout((err) => {
+        if (err) { return next(err); }
+        req.flash('success', 'Successfully Logged Out!');
+        res.redirect('/campgrounds');
+    });
 })
 
 module.exports = router;
