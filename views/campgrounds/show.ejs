@@ -3,7 +3,10 @@
     <div class="row">
         <div class="col-6">
             <div class="card mb-3">
-                <img src="<%= campground.image %>" class="card-img-top" alt="...">
+                <% for (let img of campground.images) { %> 
+                    <img src="<%= img.url %>" class="card-img-top" alt="...">
+                <% } %> 
+                
                 <div class="card-body">
                     <h3 class="card-title">
                         <%= campground.title %>
@@ -38,10 +41,6 @@
             <div>
                 <h3>Leave a Review</h3>
                 <form class="validated-form" action="/campgrounds/<%=campground._id%>/reviews" method="POST" novalidate>
-                    <!-- <div class="mb-3">
-                        <label class="form-label" for="rating">Rating</label>
-                        <input class="form-range" type="range" name="review[rating]" id="rating" min="1" max="5">
-                    </div> -->
                     <div class="">
                         <fieldset class="starability-basic">
                         <input type="radio" id="no-rate" class="input-no-rate" name="review[rating]" value="1" checked aria-label="No rating." />
