@@ -4,22 +4,19 @@ const catchAsync = require('../utils/catchAsync')
 const passport = require('passport');
 const users = require('../controllers/users');
 
-router.get('/register', users.renderRegister)
+router.route('/register')
+    .get(users.renderRegister)
+    .post(catchAsync(users.register));
 
-router.post('/register', catchAsync(users.register));
-
-router.get('/login', users.renderLogin);
-
-// have passport authenticate with local strategy
-router.post(
-    '/login',
-    passport.authenticate('local', {
+router.route('/login')
+    .get(users.renderLogin)
+    .post(passport.authenticate('local', { // have passport authenticate with local strategy
         failureFlash: true,
         failureRedirect: '/login',
         keepSessionInfo: true
     }),
-    users.login
-)
+        users.login
+    );
 
 router.get('/logout', users.logout);
 
