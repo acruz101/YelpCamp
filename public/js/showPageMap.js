@@ -16,3 +16,6 @@ new mapboxgl.Marker({ color: 'black' })
         )
     )
     .addTo(map);
+
+// Add zoom and rotation controls to the map.
+map.addControl(new mapboxgl.NavigationControl());
