@@ -1,6 +1,4 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config();
-}
+require('dotenv').config();
 
 const express = require('express');
 const app = express();
@@ -40,11 +38,13 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(mongoSanitize())
 
 const sessionConfig = {
+    name: 'session', // change default session name
     secret: 'badsecret', // change in production
     resave: false,
     saveUninitialized: true,
     cookie: {
-        httpOnly: true, // security measure (default is true)
+        httpOnly: true, // security measure (default is true) -- cookie is only accessible with HTTP not JS
+        // secure: true, // cookie only works with HTTPS -- local host is not HTTPS -- uncomment during deployment
         expires: Date.now() + 1000 * 60 * 60 * 24 * 7, // a week from now
         maxAge: 1000 * 60 * 60 * 24 * 7
     }
