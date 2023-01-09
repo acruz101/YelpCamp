@@ -22,7 +22,8 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 
-// const dbUrl = process.env.DB_URL;
+const MongoStore = require('connect-mongo');
+const dbUrl = process.env.DB_URL || 'mongodb://localhost:27017/yelp-camp';
 
 // connect to db
 main()
@@ -30,8 +31,7 @@ main()
     .catch(err => console.log(err));
 
 async function main() {
-    await mongoose.connect('mongodb://localhost:27017/yelp-camp');
-    // await mongoose.connect(dbUrl)
+    await mongoose.connect(dbUrl);
 }
 
 app.engine('ejs', ejsMate);
@@ -91,7 +91,20 @@ app.use(
 
 app.use(helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }));
 
+const secret = process.env.SECRET || 'thisshouldbeabettersecret';
+
+const store = MongoStore.create({
+    mongoUrl: dbUrl,
+    secret,
+    touchAfter: 24 * 60 * 60
+});
+
+store.on('error', function (e) {
+    console.log("SESSION STORE ERROR", e);
+})
+
 const sessionConfig = {
+    store,
     name: 'session', // change default session name
     secret: 'badsecret', // change in production
     resave: false,
