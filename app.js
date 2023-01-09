@@ -1,4 +1,6 @@
-require('dotenv').config();
+if (process.env.NODE_ENV !== 'production') {
+    require('dotenv').config();
+}
 
 const express = require('express');
 const app = express();
@@ -20,6 +22,8 @@ const campgroundRoutes = require('./routes/campgrounds');
 const reviewRoutes = require('./routes/reviews');
 const userRoutes = require('./routes/users');
 
+// const dbUrl = process.env.DB_URL;
+
 // connect to db
 main()
     .then(() => console.log('MONGO CONNECTION OPEN'))
@@ -27,6 +31,7 @@ main()
 
 async function main() {
     await mongoose.connect('mongodb://localhost:27017/yelp-camp');
+    // await mongoose.connect(dbUrl)
 }
 
 app.engine('ejs', ejsMate);
@@ -82,7 +87,7 @@ app.use(
             fontSrc: ["'self'", ...fontSrcUrls],
         },
     })
-); 
+);
 
 app.use(helmet.crossOriginEmbedderPolicy({ policy: "credentialless" }));
 
